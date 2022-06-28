@@ -10,18 +10,19 @@
 
 <body>
     <button id="submitBtn">Submit</button>
-    <div id="accountCard">
-    </div>
+    <ul id="accountCard">
+    </ul>
 </body>
 <script>
     const TOKEN = "Token ec7901d17df423a1b4d14d4229fb2be5a96e439bd01126489c53ceb3e3348a72"
     const BASE_URL = "https://stage.getprospa.com/api/v1/account/holder_sub_wallets/548/"
     const submitBtn = document.getElementById("submitBtn")
-    const accountData = document.getElementById("accountCard")
+    
     submitBtn.addEventListener("click", () => {
         fetchData()
     })
-    const fetchData = async () => {
+    const fetchData = () => {
+        
         try {
             const response = fetch(BASE_URL, {
                 method: 'GET',
@@ -32,13 +33,10 @@
             }).then((response) => {
                 response.json().then((data) => {
                     const accounts = data.data
-                    
-                    console.log(accounts.length, "<===accounts")
-                    accounts.map((account) => {
-                        accountData.innerHTML = `<p>Available Balance: ${account?.available_balance} \n Name: ${account?.preferred_name}</p>`
+                    document.getElementById("accountCard").innerHTML = accounts.map((account) => {
+                        return `<li>Available Balance: ${account?.available_balance} Name: ${account?.preferred_name}</li>`
                     })
                 })
-
             })
 
         } catch (error) {
